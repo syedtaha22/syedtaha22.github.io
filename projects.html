@@ -1,216 +1,221 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description"
-        content="Hello! I'm Syed Taha — here are some of the projects I've worked on, mostly around systems programming, machine learning, and low-level computing.">
-    <meta name="keywords"
-        content="Syed Taha, systems programming, RISC-V, machine learning, LLM inference, xv6, physics engine, Othello AI, IBA Karachi">
-    <meta name="author" content="Syed Taha">
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem("theme-preference") || "system";
+          var dark = pref === "dark" || (pref === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch (e) {}
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Syed Taha" />
+    <meta name="description" content="Projects by Syed Taha — systems programming, machine learning, and high-performance computing — plus a live list of public GitHub repositories." />
+    <meta name="keywords" content="Syed Taha, systems programming, RISC-V, machine learning, LLM inference, xv6, physics engine, Othello AI, IBA Karachi" />
+    <link rel="canonical" href="https://syedtaha.dev/projects.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Projects — Syed Taha" />
+    <meta property="og:description" content="Systems programming, machine learning, and high-performance computing projects, plus a live GitHub repository list." />
+    <meta property="og:url" content="https://syedtaha.dev/projects.html" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <script defer src="/assets/js/theme.js"></script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.webp" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.webp" />
+    <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.webp" />
 
     <title>Projects - Syed Taha</title>
-
-    <!-- Canonical link tag -->
-    <link rel="canonical" href="/projects.html">
-
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Open+Sans:wght@400;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css" />
-
-    <!-- Favicon links -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.webp">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.webp">
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicons/favicon-48x48.webp">
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicons/favicon-64x64.webp">
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.webp">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.webp">
-
-    <!-- Google Analytics (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2HDCTFNV6"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-V2HDCTFNV6');
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Person",
-      "name": "Syed Taha",
-      "url": "https://syedtaha.dev",
-      "image": "/images/syedtaha.webp",
-      "sameAs": [
-        "https://www.instagram.com/syedtaha22/",
-        "https://www.linkedin.com/in/syetaha/",
-        "https://github.com/syedtaha22"
-      ],
-      "jobTitle": "Computer Science Student",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Institute of Business Administration, Karachi"
-      }  
-    }
-    </script>
 </head>
 
-<body class="is-preload">
-    <div id="page-wrapper">
+<body>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <a href="/">Home</a>
+        <a href="/projects.html" aria-current="page">Projects</a>
+        <a href="/blog/">Blog</a>
+    </nav>
 
-        <!-- Header -->
-        <header id="header">
-            <h1 id="logo" style="display:flex; gap:1.5rem; align-items:center; padding-left:0.5rem;">
-                <a href="https://github.com/syedtaha22" class="icon brands fa-github" title="GitHub"><span class="label">GitHub</span></a>
-                <a href="https://www.linkedin.com/in/syetaha/" class="icon brands fa-linkedin-in" title="LinkedIn"><span class="label">LinkedIn</span></a>
-                <a href="/syedtaha.pdf" class="icon solid fa-file-pdf" title="Resume"><span class="label">Resume</span></a>
-            </h1>
-            <nav id="nav">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="outside.html">Outside</a></li>
-                    <li><a href="blog/" class="button primary">My Blog</a></li>
-                </ul>
-            </nav>
-        </header>
+    <main class="wrap">
 
-        <!-- Main -->
-        <div id="main" class="wrapper style1">
-            <div class="container">
-                <header class="major">
-                    <h2>Things I've Built</h2>
-                    <p>
-                        A mix of research projects and personal work, mostly around
-                        <strong>systems programming</strong>, <strong>machine learning</strong>,
-                        and <strong>high-performance computing</strong>.
-                    </p>
-                </header>
-                <div class="row gtr-150">
-                    <div class="col-4 col-12-medium">
+        <section>
+            <p class="eyebrow">Projects</p>
+            <h1 style="font-size: clamp(2rem, 4vw, 2.6rem);">Things I've built</h1>
+            <p class="prose">
+                A mix of research and personal work, mostly around systems programming,
+                machine learning, and high-performance computing. Write-ups for some of
+                these live on the <a href="/blog/">blog</a>.
+            </p>
+        </section>
 
-                        <!-- Sidebar -->
-                        <section id="sidebar">
-                            <section>
-                                <h3>Vectorized CNN Inference on RISC-V</h3>
-                                <p>
-                                    We implemented a complete CNN in <strong>RISC-V assembly</strong>, using the Vector
-                                    Extension (RVV) to make it feasible on edge hardware. Switching to im2col + GEMM
-                                    and FP16 compression got us a <strong>7.3x speedup</strong> in total inference time
-                                    and a <strong>12.2x reduction</strong> in convolution instructions. There's also a
-                                    range-reduction algorithm for Softmax that cut iterations by 99.9%.
-                                    A <strong>research paper is currently under review.</strong>
-                                </p>
-                            </section>
-                            <hr />
+        <section class="block">
+            <div class="carousel-wrap">
+                <div class="project-carousel" id="project-carousel" aria-roledescription="carousel" aria-label="Selected projects">
+                    <div class="carousel-track" id="carousel-track">
 
-                            <section>
-                                <a class="image fit">
-                                    <img src="images/othello_boards.webp" alt="Othello match progression showing AI winning as black - board positions from left to right" />
-                                </a>
-                                <h3>Othello AI with MCTS and CNNs</h3>
-                                <p>
-                                    We combined <strong>Monte Carlo Tree Search</strong> with a CNN for board evaluation
-                                    and move prediction. Most of the work went into trimming the model down — got it
-                                    from 85MB to 42.66MB (<strong>50% smaller</strong>) while making it
-                                    <strong>10x faster</strong> per move (1000ms → 100ms) and keeping a &gt;90% win
-                                    rate against the larger baselines.
-                                </p>
-                            </section>
-                            <hr />
-                        </section>
+                    <article class="carousel-slide no-media">
+                        <div class="slide-text">
+                            <span class="slide-index">01 / 05</span>
+                            <h3>PiSSM</h3>
+                            <p class="slide-meta">Active development · Python, gRPC, FastAPI, React</p>
+                            <p>
+                                A distributed inference system for state space models (Mamba, S4)
+                                and small LLMs across a 6-node Raspberry Pi 5 cluster. Handles node
+                                discovery, model sharding, and pipeline-parallel execution
+                                transparently — each Pi runs a daemon that broadcasts presence,
+                                while an orchestrator maintains a live node registry and dispatches
+                                work over gRPC. Accessible through a Textual TUI and a React WebUI.
+                            </p>
+                            <p class="links"><a href="https://github.com/syedtaha22/PiSSM">View on GitHub →</a></p>
+                        </div>
+                    </article>
 
-                    </div>
-                    <div class="col-8 col-12-medium imp-medium">
+                    <article class="carousel-slide has-media">
+                        <div class="slide-text">
+                            <span class="slide-index">02 / 05</span>
+                            <h3>Othello AI with MCTS and CNNs</h3>
+                            <p class="slide-meta">C++, PyTorch</p>
+                        </div>
+                        <div class="slide-media">
+                            <img src="/images/othello_boards.webp" alt="Othello match progression showing the AI winning as black, board positions from left to right" />
+                        </div>
+                        <div class="slide-text">
+                            <p>
+                                Monte Carlo Tree Search combined with a CNN for board evaluation
+                                and move prediction. Most of the effort went into trimming the
+                                model — from 85MB to 42.66MB (50% smaller) — while making it 10×
+                                faster per move (1000ms → 100ms) and keeping a &gt;90% win rate
+                                against the larger baseline.
+                            </p>
+                        </div>
+                    </article>
 
-                        <!-- Content -->
-                        <section id="content">
-                            <a class="image fit" style="border-radius: 10px;"><img src="images/llm_performance_analysis.webp"
-                                    alt="LLM performance analysis showing throughput scaling, speedup factor, and time distribution across thread counts" /></a>
+                    <article class="carousel-slide has-media">
+                        <div class="slide-text">
+                            <span class="slide-index">03 / 05</span>
                             <h3>LLM Inference in xv6</h3>
+                            <p class="slide-meta">C, xv6 kernel</p>
+                        </div>
+                        <div class="slide-media">
+                            <img src="/images/llm_performance_analysis.webp" alt="LLM performance analysis showing throughput scaling, speedup factor, and time distribution across thread counts" />
+                        </div>
+                        <div class="slide-text">
                             <p>
-                                The question was simple enough: could you run a modern LLM inference engine on a
-                                minimal educational OS? Turns out you can, but it takes some work. We built a
-                                <strong>POSIX-compliant Shared Memory subsystem</strong> for the xv6 kernel to
-                                cache model weights (~100MB) without redundant transfers, then implemented
-                                <strong>custom threading primitives from scratch</strong> and parallelized the
-                                inference engine. End result: <strong>16.2 tokens/sec</strong>, up from ~7.
+                                Could a modern LLM inference engine run on a minimal educational
+                                OS? A POSIX-compliant shared-memory subsystem for the xv6 kernel
+                                caches model weights (~100MB) without redundant transfers; custom
+                                threading primitives, built from scratch, parallelize the
+                                inference engine itself. End result: 16.2 tokens/sec, up from ~7.
                             </p>
-                            <p>
-                                Along the way we also wrote a cycle-accurate profiling library to track call
-                                hierarchies — which is how we found that matrix multiplication was eating
-                                87–92% of inference time. The whole process is documented in a
-                                <strong>book</strong> covering the methodology and implementation.
-                            </p>
-                            <footer>
-                                <ul class="actions">
-                                    <li><a href="https://github.com/syedtaha22/xv6-llm-book" class="button"
-                                            target="_blank">Get the Book</a></li>
-                                </ul>
-                            </footer>
-                        </section>
-                        <hr />
+                            <p class="links"><a href="https://github.com/syedtaha22/xv6-llm-book">Read the book →</a></p>
+                        </div>
+                    </article>
 
-                        <!-- Content -->
-                        <section id="content">
+                    <article class="carousel-slide no-media">
+                        <div class="slide-text">
+                            <span class="slide-index">04 / 05</span>
                             <h3>Kaggle: Safe Driver Prediction — 1st Place</h3>
+                            <p class="slide-meta">Python, XGBoost, LightGBM, CatBoost</p>
                             <p>
-                                I entered a Kaggle competition on imbalanced tabular data and ended up
-                                finishing 1st (Private Leaderboard AUROC: 0.64671). The approach was a
-                                stacking ensemble of <strong>XGBoost</strong>, <strong>LightGBM</strong>,
-                                and <strong>CatBoost</strong> with a logistic regression meta-learner, combined
-                                with a preprocessing pass to handle the extensive missing data and drop
-                                non-predictive features.
+                                A stacking ensemble of XGBoost, LightGBM, and CatBoost with a
+                                logistic regression meta-learner, combined with preprocessing for
+                                extensive missing data and non-predictive features. Finished 1st
+                                on imbalanced tabular data (Private Leaderboard AUROC: 0.64671).
                             </p>
-                            <footer>
-                                <ul class="actions">
-                                    <li><a href="/blog/post.html?id=2" class="button"
-                                            target="_blank">View Note</a></li>
-                                </ul>
-                            </footer>
-                        </section>
-                        <hr />
+                            <p class="links"><a href="/blog/enhanched-safe-drive-prediction.html">Read the write-up →</a></p>
+                        </div>
+                    </article>
 
-                        <!-- Content -->
-                        <section id="content">
+                    <article class="carousel-slide no-media">
+                        <div class="slide-text">
+                            <span class="slide-index">05 / 05</span>
                             <h3>2D Physics &amp; Orbital Mechanics Engine</h3>
+                            <p class="slide-meta">C++, SFML</p>
                             <p>
-                                I built a modular 2D physics engine from scratch in <strong>C++</strong> — rigid
-                                body dynamics, velocity-based movement, AABB collision detection. Then extended it
-                                into an orbital mechanics simulation for gravitational N-body interactions using
-                                numerical integration. Built a real-time visualization layer with SFML so I could
-                                actually watch it run and catch bugs visually.
+                                A modular 2D physics engine from scratch in C++ — rigid body
+                                dynamics, velocity-based movement, AABB collision detection —
+                                extended into an orbital mechanics simulation for gravitational
+                                N-body interactions via numerical integration, with a real-time
+                                SFML visualization layer.
                             </p>
-                            <footer>
-                                <ul class="actions">
-                                    <li><a href="https://github.com/syedtaha22/Physics-Engine/" class="button"
-                                            target="_blank">View on GitHub</a></li>
-                                </ul>
-                            </footer>
-                        </section>
-                        <hr />
+                            <p class="links"><a href="https://github.com/syedtaha22/Physics-Engine/">View on GitHub →</a></p>
+                        </div>
+                    </article>
+
                     </div>
                 </div>
+
+                <button class="carousel-nav prev" id="carousel-prev" type="button" aria-label="Previous project">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="carousel-nav next" id="carousel-next" type="button" aria-label="Next project">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+                <div class="carousel-dots" id="carousel-dots"></div>
             </div>
+        </section>
+
+
+        <section class="block">
+            <p class="eyebrow">GitHub</p>
+            <h2>Public repositories</h2>
+            <p class="prose" style="margin-bottom: 1.6rem;">
+                Pulled live from the GitHub API, so this list stays current without
+                upkeep — everything public and not a fork. Repositories pushed to in
+                the last 6 months are Active; older ones move to Archived; anything
+                without a description is tucked under Other.
+            </p>
+
+            <div class="repo-controls">
+                <div class="tabs" id="repo-tabs" role="tablist">
+                    <button class="tab is-active" data-tab="all" role="tab" aria-selected="true">All</button>
+                    <button class="tab" data-tab="active" role="tab" aria-selected="false">Active</button>
+                    <button class="tab" data-tab="archived" role="tab" aria-selected="false">Archived</button>
+                    <button class="tab" data-tab="other" role="tab" aria-selected="false">Other</button>
+                </div>
+                <input type="search" id="repo-search" class="search-input" placeholder="Search repositories…" aria-label="Search repositories" />
+            </div>
+
+            <p id="repos-status">Loading repositories from GitHub…</p>
+            <div class="repo-grid" id="repos-grid" hidden></div>
+            <p id="repos-empty" class="prose" hidden>No repositories match here.</p>
+
+            <p style="margin-top: 1.8rem; font-family: var(--mono); font-size: 0.86rem;">
+                <a href="https://github.com/syedtaha22">Full profile on GitHub →</a>
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            &copy; 2026 Syed Taha. Built with plain HTML, CSS, and JS —
+            <a href="https://github.com/syedtaha22/personal-website">source</a>.
         </div>
+    </footer>
 
-        <!-- Component: Footer -->
-        <div id="component-footer"></div>
-
+    <script src="/assets/js/project-carousel.js"></script>
+    <script src="/assets/js/repos.js"></script>
+    <script src="/assets/js/terrain-bg.js"></script>
+    <script src="/assets/js/nav-indicator.js"></script>
+    <div class="theme-switcher" id="theme-switcher">
+        <button class="theme-trigger" id="theme-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Change theme"><span class="swatch" aria-hidden="true"></span></button>
+        <div class="theme-menu" id="theme-menu" role="menu" hidden>
+            <button class="theme-option" type="button" data-theme-choice="light" role="menuitem">Light</button>
+            <button class="theme-option" type="button" data-theme-choice="dark" role="menuitem">Dark</button>
+            <button class="theme-option" type="button" data-theme-choice="system" role="menuitem">System</button>
+        </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="/assets/js/components.js"></script>
-
+    <script src="/assets/js/tabs-indicator.js"></script>
 </body>
 
 </html>
