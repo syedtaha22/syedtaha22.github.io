@@ -10,7 +10,10 @@ import Tabs from "@/components/Tabs";
  *
  * Tabs:
  *   Active   - pushed to within the last 6 months, has a description
- *   Archived - last push more than 6 months ago (or GitHub-archived)
+ *   Inactive - last push more than 6 months ago
+ *
+ * Repos archived on GitHub (the `archived` flag in the API response) are
+ * dropped entirely.
  *   Other    - no description set, regardless of activity
  *
  * Uses the unauthenticated API (60 req/hr per IP), which is well within
@@ -28,7 +31,7 @@ const LANG_COLORS: Record<string, string> = {
   Go: "#00ADD8", Shell: "#89e051", CMake: "#DA3434",
 };
 
-type Bucket = "active" | "archived" | "other";
+type Bucket = "active" | "inactive" | "other";
 
 type ApiRepo = {
   name: string;
@@ -55,7 +58,7 @@ function timeAgo(dateStr: string, now: number) {
 function classify(repo: ApiRepo, now: number): Bucket {
   if (!repo.description) return "other";
   const pushedMsAgo = now - new Date(repo.pushed_at).getTime();
-  if (repo.archived || pushedMsAgo > SIX_MONTHS_MS) return "archived";
+  if (pushedMsAgo > SIX_MONTHS_MS) return "inactive";
   return "active";
 }
 
@@ -63,7 +66,7 @@ function RepoCard({ repo }: { repo: Repo }) {
   return (
     <a className="repo-card" href={repo.html_url} target="_blank" rel="noopener noreferrer">
       <span className="repo-name">{repo.name}</span>
-      <p className="repo-desc">{repo.description || "No description provided."}</p>
+      {repo.description && <p className="repo-desc">{repo.description}</p>}
       <div className="repo-meta">
         {repo.language && (
           <span>
@@ -74,7 +77,7 @@ function RepoCard({ repo }: { repo: Repo }) {
         {repo.stargazers_count > 0 && <span>★ {repo.stargazers_count}</span>}
         <span>{repo.ago}</span>
       </div>
-      {repo.bucket === "archived" && <span className="archived-flag">Archived</span>}
+      {repo.bucket === "inactive" && <span className="inactive-flag">Inactive</span>}
     </a>
   );
 }
@@ -99,7 +102,7 @@ export default function RepoList() {
         const now = Date.now();
         setRepos(
           data
-            .filter((r) => !r.fork && !EXCLUDE.has(r.name))
+            .filter((r) => !r.fork && !r.archived && !EXCLUDE.has(r.name))
             .sort((a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
             .map((r) => ({ ...r, bucket: classify(r, now), ago: timeAgo(r.pushed_at, now) }))
         );
@@ -113,15 +116,15 @@ export default function RepoList() {
   }, []);
 
   const counts = useMemo(() => {
-    const c = { active: 0, archived: 0, other: 0 };
+    const c = { active: 0, inactive: 0, other: 0 };
     repos?.forEach((r) => c[r.bucket]++);
-    return { ...c, all: c.active + c.archived };
+    return { ...c, all: c.active + c.inactive };
   }, [repos]);
 
   const tabs = [
     { key: "all", label: "All" },
     { key: "active", label: "Active" },
-    { key: "archived", label: "Archived" },
+    { key: "inactive", label: "Inactive" },
     { key: "other", label: "Other" },
   ].map((t) => ({
     ...t,
@@ -132,7 +135,7 @@ export default function RepoList() {
     if (!repos) return [];
     let list =
       tab === "all"
-        ? repos.filter((r) => r.bucket === "active" || r.bucket === "archived")
+        ? repos.filter((r) => r.bucket === "active" || r.bucket === "inactive")
         : repos.filter((r) => r.bucket === tab);
     const q = query.trim().toLowerCase();
     if (q) {

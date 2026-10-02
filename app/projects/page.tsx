@@ -41,9 +41,7 @@ export default function ProjectsPage() {
         <p className="eyebrow">GitHub</p>
         <h2>Public repositories</h2>
         <p className="prose" style={{ marginBottom: "1.6rem" }}>
-          Pulled live from the GitHub API, so this list stays current without upkeep: everything
-          public and not a fork. Repositories pushed to in the last 6 months are Active; older ones
-          move to Archived; anything without a description is tucked under Other.
+          Pulled live from the GitHub API.
         </p>
 
         <RepoList />

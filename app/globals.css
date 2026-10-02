@@ -526,13 +526,14 @@ section + section, .block + .block {
 .repo-card .repo-desc { font-size: 0.88rem; color: var(--ink-soft); flex: 1; margin: 0; }
 .repo-card .repo-meta {
   display: flex;
+  margin-top: auto;
   align-items: center;
   gap: 0.9rem;
   font-family: var(--mono);
   font-size: 0.78rem;
   color: var(--muted);
 }
-.repo-card .archived-flag {
+.repo-card .inactive-flag {
   font-family: var(--mono);
   font-size: 0.68rem;
   text-transform: uppercase;
