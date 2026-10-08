@@ -73,15 +73,15 @@ export default function HomePage() {
             <p>
               I&apos;m a CS student at IBA Karachi with a standing interest in systems programming,
               high-performance computing, and machine learning, particularly where they intersect
-              at the hardware level. I&apos;m also part of the{" "}
-              <a href="https://site-zeta-rust-98.vercel.app/">Systems Research Group at IBA</a>.
-              For what I&apos;m actually working on right now, the{" "}
-              <Link href="/projects/">projects page</Link> stays current; this bio doesn&apos;t
-              try to.
+              at the hardware level. I&apos;m also a founding member of{" "}
+              <a href="https://site-zeta-rust-98.vercel.app/">Systems Research @ IBA</a>, a student
+              research group.
+              For what I&apos;m working on right now, see the{" "}
+              <Link href="/projects/">projects page</Link>.
             </p>
             <p>
-              I currently TA at IBA. I previously served on the Executive Council (Program Design)
-              at IBA&apos;s Data Science Society, and as a Software Engineering Fellow at{" "}
+              I currently TA at IBA. I previously worked as a data science intern at Foretheta and as
+              a Software Engineering Fellow at{" "}
               <a href="https://www.headstarter.co/">Headstarter AI</a>. Outside of coursework I do
               photography, 3D work in Blender, and some informal tutoring. I write about the
               technical side of things on the <Link href="/blog/">blog</Link>.
@@ -100,10 +100,10 @@ export default function HomePage() {
           <div>
             <dt>Involvement</dt>
             <dd>
-              TA @ IBA · Systems Research Group @ IBA
+              TA @ IBA · Systems Research @ IBA
               <br />
-              Formerly: Executive Council (Program Design) @ IBA Data Science Society · Software
-              Engineering Fellow @ Headstarter AI
+              Formerly: Data Science Intern @ Foretheta · Software Engineering Fellow @ Headstarter
+              AI
             </dd>
           </div>
           <div>
