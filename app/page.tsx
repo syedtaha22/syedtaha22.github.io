@@ -120,12 +120,12 @@ export default function HomePage() {
         <h2>CV</h2>
         <p className="prose" style={{ marginBottom: "1.6rem" }}>
           Education, projects, experience, and coursework, kept reasonably up to date.{" "}
-          <a href="/syedtaha.pdf" download>
+          <a href="/cv.pdf" download>
             Download the PDF
           </a>{" "}
           if it doesn&apos;t render below.
         </p>
-        <iframe src="/syedtaha.pdf#pagemode=none&navpanes=0" className="cv-embed" title="Syed Taha, CV (PDF)" />
+        <iframe src="/cv.pdf#pagemode=none&navpanes=0" className="cv-embed" title="Syed Taha, CV (PDF)" />
       </section>
     </main>
   );
