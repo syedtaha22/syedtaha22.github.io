@@ -23,3 +23,34 @@ export function InstagramIcon() {
     </svg>
   );
 }
+
+// Outline icons used in the navigation bar on small screens.
+
+export function HomeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 10.5 12 3l9 7.5" />
+      <path d="M5 9.5V20h5v-6h4v6h5V9.5" />
+    </svg>
+  );
+}
+
+export function ProjectsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+    </svg>
+  );
+}
+
+export function BlogIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3Z" />
+      <path d="M14.5 7.5l3 3" />
+    </svg>
+  );
+}

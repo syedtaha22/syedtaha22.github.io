@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BlogIcon, HomeIcon, ProjectsIcon } from "@/components/icons";
 import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
 
 const LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/projects/", label: "Projects" },
-  { href: "/blog/", label: "Blog" },
+  { href: "/", label: "Home", Icon: HomeIcon },
+  { href: "/projects/", label: "Projects", Icon: ProjectsIcon },
+  { href: "/blog/", label: "Blog", Icon: BlogIcon },
 ];
 
 function isCurrent(pathname: string, href: string) {
@@ -27,7 +28,7 @@ export default function Navbar() {
   return (
     <nav className="site-nav" id="site-nav" aria-label="Primary" ref={ref}>
       <span className="nav-indicator" aria-hidden="true" style={style} />
-      {LINKS.map(({ href, label }) => {
+      {LINKS.map(({ href, label, Icon }) => {
         const active = href === current;
         return (
           <Link
@@ -35,9 +36,14 @@ export default function Navbar() {
             href={href}
             className={active ? "is-current" : undefined}
             aria-current={active ? "page" : undefined}
+            aria-label={label}
+            title={label}
             data-active={active}
           >
-            {label}
+            <span className="nav-label">{label}</span>
+            <span className="nav-icon" aria-hidden="true">
+              <Icon />
+            </span>
           </Link>
         );
       })}

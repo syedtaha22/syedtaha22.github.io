@@ -131,12 +131,16 @@ a:focus-visible, button:focus-visible {
   white-space: nowrap;
   transition: color 0.25s ease, background-color 0.25s ease;
 }
+.site-nav .nav-icon { display: none; }
 .site-nav a.is-current { color: var(--on-accent); }
 .site-nav a:hover:not(.is-current) { color: var(--ink); background: var(--rule-soft); }
 
 @media (max-width: 560px) {
   .site-nav { top: 0.7rem; padding: 0.3rem; }
-  .site-nav a { padding: 0.45rem 0.7rem; font-size: 0.78rem; }
+  .site-nav a { padding: 0.5rem 0.85rem; }
+  .site-nav .nav-label { display: none; }
+  .site-nav .nav-icon { display: flex; }
+  .site-nav .nav-icon svg { width: 1.15rem; height: 1.15rem; }
 }
 
 /* ---------------------------------------------------------------- main */
@@ -607,7 +611,6 @@ section + section, .block + .block {
   height: var(--dot);
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 3px var(--glass-border);
   transition: background-color 0.3s ease;
 }
 .theme-trigger:hover { border-color: var(--rule); }
