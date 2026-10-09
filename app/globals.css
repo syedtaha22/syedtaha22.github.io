@@ -425,8 +425,10 @@ section + section, .block + .block {
 .carousel-dot.is-active { width: 1.5rem; background: var(--ink); }
 
 @media (max-width: 720px) {
-  .carousel-slide { padding: 0.4rem 2.2rem 1.6rem; }
-  .carousel-nav { width: 2.2rem; height: 2.2rem; }
+  /* Arrows move below the text, flanking the dots, so they never sit on top of it. */
+  .carousel-slide { padding: 0.4rem 0.2rem 1.2rem; }
+  .carousel-nav { width: 2.2rem; height: 2.2rem; top: auto; bottom: 0; transform: none; }
+  .carousel-dots { height: 2.2rem; align-items: center; margin-top: 0.4rem; }
 }
 
 /* ---------------------------------------------------------------- repo cards */
