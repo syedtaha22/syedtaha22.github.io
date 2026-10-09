@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import "katex/dist/katex.min.css";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
+import TableOfContents from "@/components/TableOfContents";
 import { renderMarkdown } from "@/lib/markdown";
 import { getAllPosts, getPost, getPostMarkdown } from "@/lib/posts";
 
@@ -64,22 +65,7 @@ export default async function PostPage({ params }: Props) {
           <CodeBlockEnhancer slug={post.slug} />
         </div>
         <aside>
-          <div id="toc-sidebar">
-            <div id="toc-title">On this page</div>
-            <div id="toc-content">
-              {toc.length === 0 ? (
-                <p style={{ fontSize: "0.9rem", color: "#999" }}>No sections</p>
-              ) : (
-                <ul>
-                  {toc.map((h) => (
-                    <li key={h.id}>
-                      <a href={`#${h.id}`}>{h.text}</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
+          <TableOfContents entries={toc} />
         </aside>
       </div>
     </main>
