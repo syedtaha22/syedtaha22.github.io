@@ -27,23 +27,24 @@ const BASE_PERMUTATION = [
     128, 195, 78, 66, 215, 61, 156, 180,
 ];
 
-// Fixed palettes, independent of the page's text/border theme variables
-// (those were near-invisible against their own background by design, and
-// this needs an actual, distinct hue). Slate-blue in the valleys rising
-// to warm terracotta at the peaks (light theme); teal rising to warm
-// amber (dark theme).
-const PALETTES: Record<"light" | "dark", Stop[]> = {
+const PALETTE: Record<"light" | "dark", Stop[]> = {
   light: [
-    { h: 0.0, c: [90, 120, 150] },
-    { h: 0.55, c: [150, 130, 100] },
-    { h: 1.0, c: [175, 95, 60] },
+    { h: 0.0, c: [0, 60, 255] },
+    { h: 0.4, c: [90, 60, 240] },
+    { h: 0.6, c: [225, 20, 150] },
+    { h: 1.0, c: [255, 20, 90] },
   ],
   dark: [
-    { h: 0.0, c: [45, 140, 160] },
-    { h: 0.55, c: [110, 150, 150] },
-    { h: 1.0, c: [230, 165, 90] },
+    { h: 0.0, c: [30, 140, 255] },
+    { h: 0.4, c: [130, 110, 255] },
+    { h: 0.6, c: [255, 60, 190] },
+    { h: 1.0, c: [255, 80, 130] },
   ],
 };
+
+// The pale light background hides the same opacity better than the dark
+// one does, so light mode draws its lines a little more opaque.
+const LIGHT_OPACITY_BOOST = 1.5;
 
 const SETTINGS = {
   scale: 0.5,
@@ -88,7 +89,7 @@ function buildPermutation(seed: number) {
 
 function colorForHeight(h: number, alpha: number) {
   const dark = document.documentElement.getAttribute("data-theme") === "dark";
-  const stops = dark ? PALETTES.dark : PALETTES.light;
+  const stops = dark ? PALETTE.dark : PALETTE.light;
 
   let a = stops[0];
   let b = stops[stops.length - 1];
@@ -174,12 +175,15 @@ export function startTerrain(canvas: HTMLCanvasElement): () => void {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
+    const boost =
+      document.documentElement.getAttribute("data-theme") === "dark" ? 1 : LIGHT_OPACITY_BOOST;
+
     for (let lvl = 1; lvl < SETTINGS.levels; lvl++) {
       const threshold = lvl / SETTINGS.levels;
       const isIndex = lvl % 5 === 0;
       ctx.beginPath();
       ctx.lineWidth = isIndex ? SETTINGS.lineWidth * 1.6 : SETTINGS.lineWidth;
-      const alpha = (isIndex ? 1 : 0.6) * SETTINGS.contrast;
+      const alpha = Math.min(1, (isIndex ? 1 : 0.6) * SETTINGS.contrast * boost);
       ctx.strokeStyle = colorForHeight(threshold, alpha);
 
       for (let r = 0; r < rows - 1; r++) {
