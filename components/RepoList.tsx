@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ActivityIcon, ArchiveIcon, EllipsisIcon, ListFilterIcon } from "@/components/icons";
 import Tabs from "@/components/Tabs";
+import type { TabItem } from "@/components/Tabs";
 
 /**
  * Pulls public, non-fork repositories from the GitHub REST API and shows
@@ -121,14 +123,14 @@ export default function RepoList() {
     return { ...c, all: c.active + c.inactive };
   }, [repos]);
 
-  const tabs = [
-    { key: "all", label: "All" },
-    { key: "active", label: "Active" },
-    { key: "inactive", label: "Inactive" },
-    { key: "other", label: "Other" },
+  const tabs: TabItem[] = [
+    { key: "all", label: "All", icon: <ListFilterIcon /> },
+    { key: "active", label: "Active", icon: <ActivityIcon /> },
+    { key: "inactive", label: "Inactive", icon: <ArchiveIcon /> },
+    { key: "other", label: "Other", icon: <EllipsisIcon /> },
   ].map((t) => ({
     ...t,
-    label: repos ? `${t.label} (${counts[t.key as keyof typeof counts]})` : t.label,
+    count: repos ? counts[t.key as keyof typeof counts] : undefined,
   }));
 
   const visible = useMemo(() => {

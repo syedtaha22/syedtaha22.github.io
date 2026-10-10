@@ -18,6 +18,8 @@
   --on-accent:  #ffffff;
   --glass-bg:     rgba(250, 249, 246, 0.72);
   --glass-border: rgba(20, 20, 20, 0.09);
+  --glass-blur: blur(18px) saturate(180%);
+  --nav-tint: rgba(20, 24, 34, 0.2);
 
   --sans: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -46,6 +48,7 @@ html[data-theme="dark"] {
   --on-accent:  #ffffff;
   --glass-bg:     rgba(13, 17, 23, 0.62);
   --glass-border: rgba(255, 255, 255, 0.09);
+  --nav-tint: rgba(255, 255, 255, 0.28);
 
   color-scheme: dark;
 }
@@ -85,6 +88,7 @@ a:focus-visible, button:focus-visible {
 /* ---------------------------------------------------------------- nav */
 
 .site-nav {
+  --nav-pad: 0.35rem;
   position: fixed;
   top: 1.1rem;
   left: 50%;
@@ -93,20 +97,48 @@ a:focus-visible, button:focus-visible {
   display: flex;
   align-items: center;
   gap: 0.15rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  padding: 0.35rem;
+  padding: var(--nav-pad);
+}
+
+/* Glass and shadow are separate layers: on small screens a mask cuts the
+   labels out of the glass, and a mask clips the shadow of its own element,
+   so the shadow cannot sit on the masked glass. */
+.nav-shadow,
+.nav-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.nav-shadow {
+  z-index: -2;
   box-shadow: 0 8px 32px -14px rgba(0, 0, 0, 0.28);
+}
+.nav-glass {
+  z-index: -1;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .nav-glass { background: var(--card); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .nav-glass {
+    background: var(--card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .nav-indicator {
   position: absolute;
-  top: 0.35rem;
-  bottom: 0.35rem;
+  top: var(--nav-pad);
+  bottom: var(--nav-pad);
   left: 0;
   width: 0;
   border-radius: 999px;
@@ -135,12 +167,55 @@ a:focus-visible, button:focus-visible {
 .site-nav a.is-current { color: var(--on-accent); }
 .site-nav a:hover:not(.is-current) { color: var(--ink); background: var(--rule-soft); }
 
+/* Small screens: the links show icons, and the icons are cut out of the
+   glass and out of the pill (see useCutoutMask), so the page shows through
+   them. The links themselves are transparent and only provide the hit
+   area. They keep their colour until the cut-out exists. */
 @media (max-width: 560px) {
-  .site-nav { top: 0.7rem; padding: 0.3rem; }
+  .site-nav { --nav-pad: 0.3rem; top: 0.7rem; }
   .site-nav a { padding: 0.5rem 0.85rem; }
   .site-nav .nav-label { display: none; }
   .site-nav .nav-icon { display: flex; }
   .site-nav .nav-icon svg { width: 1.15rem; height: 1.15rem; }
+
+  .site-nav[data-cutout="ready"] a { color: transparent; }
+  .site-nav a:hover:not(.is-current) { background: rgba(255, 255, 255, 0.14); }
+
+  .nav-glass { background: linear-gradient(var(--nav-tint), var(--nav-tint)), var(--glass-bg); }
+  @supports not (backdrop-filter: blur(1px)) {
+    .nav-glass { background: var(--card); }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .nav-glass { background: var(--card); }
+  }
+
+  /* Subtracts the icons (--cutout-image, built by useCutoutMask) from
+     whatever element carries this class, leaving a hole in the shape of
+     each one. */
+  .nav-cutout {
+    -webkit-mask-image: var(--cutout-image, none), linear-gradient(#000, #000);
+    mask-image: var(--cutout-image, none), linear-gradient(#000, #000);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: var(--nav-w, 100%) var(--nav-h, 100%), 100% 100%;
+    mask-size: var(--nav-w, 100%) var(--nav-h, 100%), 100% 100%;
+    -webkit-mask-position: 0 0, 0 0;
+    mask-position: 0 0, 0 0;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* The pill moves, so its copy of the cut-out moves the opposite way to
+     keep the icons in place. */
+  .nav-indicator {
+    -webkit-mask-position: calc(var(--pill-x, 0px) * -1) calc(var(--nav-pad) * -1), 0 0;
+    mask-position: calc(var(--pill-x, 0px) * -1) calc(var(--nav-pad) * -1), 0 0;
+    transition:
+      left 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      width 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      -webkit-mask-position 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      mask-position 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
 }
 
 /* ---------------------------------------------------------------- main */
@@ -453,7 +528,11 @@ section + section, .block + .block {
   position: relative;
   display: inline-flex;
   gap: 0.3rem;
-  background: var(--rule-soft);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px -14px rgba(0, 0, 0, 0.28);
   border-radius: 999px;
   padding: 0.25rem;
 }
@@ -483,19 +562,44 @@ section + section, .block + .block {
   cursor: pointer;
   transition: color 0.25s ease;
 }
+.tab .tab-icon { display: none; }
+.tab .tab-count { margin-left: 0.3em; }
+.tab .tab-count::before { content: "("; }
+.tab .tab-count::after { content: ")"; }
 .tab:hover { color: var(--ink); }
+
+/* Tabs that have icons show the icon and the bare count on narrow screens,
+   so the label and the count never wrap onto two lines. */
+@media (max-width: 560px) {
+  .tab[data-icon] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+  }
+  .tab[data-icon] .tab-label { display: none; }
+  .tab[data-icon] .tab-icon { display: flex; }
+  .tab[data-icon] .tab-icon svg { width: 1.1rem; height: 1.1rem; }
+  .tab[data-icon] .tab-count { margin-left: 0; }
+  .tab[data-icon] .tab-count::before,
+  .tab[data-icon] .tab-count::after { content: none; }
+}
 .tab.is-active { color: var(--on-ink); }
 
 .search-input {
   font-family: var(--sans);
   font-size: 0.92rem;
   color: var(--ink);
-  background: var(--card);
-  border: 1px solid var(--rule);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px -14px rgba(0, 0, 0, 0.28);
   border-radius: 999px;
   padding: 0.55rem 1.1rem;
   min-width: 15rem;
 }
+.search-input::placeholder { color: var(--muted); }
 .search-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 .repo-grid {
@@ -594,8 +698,8 @@ section + section, .block + .block {
   padding: 0 0 0 calc((var(--trigger) - var(--dot)) / 2 - 1px);
   border-radius: 999px;
   background: var(--glass-bg);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: 0 8px 32px -14px rgba(0, 0, 0, 0.28);
   display: flex;
@@ -875,6 +979,9 @@ section + section, .block + .block {
 #post-content { max-width: var(--prose); }
 #post-content h1, #post-content h2 { margin-top: 2.2rem; }
 #post-content h3 { margin-top: 1.5rem; }
+/* Leaves room above a heading reached by a link, so it does not land under
+   the fixed navigation bar. */
+#post-content :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 6rem; }
 #post-content p { color: var(--ink-soft); }
 .code-block-wrapper { position: relative; margin: 1.2rem 0; }
 #post-content pre {

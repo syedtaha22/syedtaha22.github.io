@@ -1,8 +1,15 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
 
-export type TabItem = { key: string; label: string };
+export type TabItem = {
+  key: string;
+  label: string;
+  /** Shown instead of the label on narrow screens. */
+  icon?: ReactNode;
+  count?: number;
+};
 
 type Props = {
   tabs: TabItem[];
@@ -27,10 +34,19 @@ export default function Tabs({ tabs, active, onChange, id }: Props) {
             role="tab"
             className={isActive ? "tab is-active" : "tab"}
             aria-selected={isActive}
+            aria-label={tab.icon ? tab.label : undefined}
+            title={tab.icon ? tab.label : undefined}
             data-active={isActive}
+            data-icon={tab.icon ? "true" : undefined}
             onClick={() => onChange(tab.key)}
           >
-            {tab.label}
+            {tab.icon && (
+              <span className="tab-icon" aria-hidden="true">
+                {tab.icon}
+              </span>
+            )}
+            <span className="tab-label">{tab.label}</span>
+            {tab.count !== undefined && <span className="tab-count">{tab.count}</span>}
           </button>
         );
       })}
