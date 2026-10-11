@@ -1,0 +1,22 @@
+/* The chess page: the stage the board sits in, and the written description below it. */
+
+/* The board is wider than the site's text column, so the stage has its own width and the
+   page heading above it keeps the column's left edge. */
+.chess-stage {
+  max-width: 1480px;
+  margin: 2.2rem auto 0;
+  padding: 0 2rem;
+  overflow-x: clip;
+}
+
+/* The written description below the board. */
+.chess-about {
+  max-width: 56.25rem;
+  margin: 4.4rem auto 0;
+  padding: 3.2rem 2rem 0;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.chess-about .prose {
+  max-width: 46rem;
+}

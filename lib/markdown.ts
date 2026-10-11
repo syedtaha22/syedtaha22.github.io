@@ -1,4 +1,5 @@
 import { Marked } from "marked";
+import markedFootnote from "marked-footnote";
 import markedKatex from "marked-katex-extension";
 import { getSingletonHighlighter, type BundledLanguage } from "shiki";
 
@@ -10,6 +11,13 @@ export type TocEntry = { id: string; text: string };
 // See `pre.shiki` in globals.css.
 const SHIKI_THEMES = { light: "github-light", dark: "github-dark" } as const;
 const PLAINTEXT_LANG = "text";
+
+// The arrow of a footnote's back link. The arrow character shows as an emoji on some phones,
+// so each back link draws the same arrow as an SVG.
+const BACKREF_ICON =
+  '<svg class="footnote-backref-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+  'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M20 20v-7a4 4 0 0 0-4-4H4"/><path d="m9 14-5-5 5-5"/></svg>';
 
 function slugify(text: string) {
   return text
@@ -51,8 +59,9 @@ export async function renderMarkdown(source: string) {
   const toc: TocEntry[] = [];
   const used = new Set<string>();
 
-  // A malformed formula renders as an inline error instead of throwing.
-  const marked = new Marked(markedKatex({ throwOnError: false }), {
+  // A malformed formula renders as an inline error instead of throwing. [^1] footnotes become
+  // a numbered list at the end, with a link back to each reference.
+  const marked = new Marked(markedKatex({ throwOnError: false }), markedFootnote(), {
     gfm: true,
     renderer: {
       heading({ tokens, depth }) {
@@ -79,5 +88,6 @@ export async function renderMarkdown(source: string) {
     },
   });
 
-  return { html: marked.parse(source, { async: false }), toc };
+  const html = marked.parse(source, { async: false }).replaceAll("\u21A9", BACKREF_ICON);
+  return { html, toc };
 }

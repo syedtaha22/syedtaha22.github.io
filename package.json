@@ -2,6 +2,9 @@
   "name": "personal-website",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "vendor/*/frontend"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +14,7 @@
   "dependencies": {
     "katex": "^0.18.9",
     "marked": "^18.0.14",
+    "marked-footnote": "^1.4.0",
     "marked-katex-extension": "^5.1.13",
     "next": "16.3.7",
     "react": "19.2.8",

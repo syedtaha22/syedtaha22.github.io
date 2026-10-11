@@ -1055,3 +1055,64 @@ html[data-theme="dark"] #post-content pre.shiki span { color: var(--shiki-dark);
 #toc-content li { margin-bottom: 0.6rem; }
 #toc-content a { color: var(--accent); text-decoration: none; font-size: 0.9rem; line-height: 1.4; display: block; }
 #toc-content a:hover { color: var(--ink); text-decoration: underline; }
+
+/* ---------------------------------------------------------------- footnotes */
+
+/* [^1] footnotes: a divider, then an ordered list of small muted text, the way GitHub shows
+   them. They appear in blog posts and on pages whose text is written in markdown. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+sup a[data-footnote-ref] {
+  text-decoration: none;
+}
+
+section.footnotes {
+  margin-top: 2.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+}
+
+section.footnotes ol {
+  margin: 0;
+  padding-left: 1.3rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+section.footnotes li {
+  margin-bottom: 0.7rem;
+}
+
+section.footnotes li::marker {
+  color: var(--muted);
+}
+
+section.footnotes li p {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+a[data-footnote-backref] {
+  margin-left: 0.25rem;
+  text-decoration: none;
+}
+
+.footnote-backref-icon {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.1em;
+}
