@@ -26,6 +26,7 @@
 
   --wrap: 1180px;
   --prose: 42rem;
+  --post-prose: 50rem;
   --nav-h: 4.5rem;
 
   color-scheme: light;
@@ -87,8 +88,12 @@ a:focus-visible, button:focus-visible {
 
 /* ---------------------------------------------------------------- nav */
 
+/* The bar slides out of view while scrolling down and returns on any
+   upward scroll (see Navbar). */
 .site-nav {
   --nav-pad: 0.35rem;
+  /* Coming back is quick and starts at once, going away is a touch slower. */
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: fixed;
   top: 1.1rem;
   left: 50%;
@@ -104,6 +109,12 @@ a:focus-visible, button:focus-visible {
 /* Glass and shadow are separate layers: on small screens a mask cuts the
    labels out of the glass, and a mask clips the shadow of its own element,
    so the shadow cannot sit on the masked glass. */
+.site-nav.is-hidden {
+  transform: translate(-50%, calc(-100% - 1.5rem));
+  transition: transform 0.3s ease-in;
+}
+.site-nav.is-hidden:focus-within { transform: translateX(-50%); }
+
 .nav-shadow,
 .nav-glass {
   position: absolute;
@@ -666,14 +677,70 @@ section + section, .block + .block {
 #cv { scroll-margin-top: 6rem; }
 
 
-.cv-embed {
-  width: 100%;
-  height: calc(100vh - 17rem);
-  min-height: 420px;
-  max-height: 780px;
-  border: 1px solid var(--rule);
-  border-radius: 0.9rem;
+/* vertical career timeline */
+
+/* Narrow screens: one column with the line at the left edge. */
+.timeline {
+  --rail: 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 calc(var(--rail) + 1.4rem);
+  position: relative;
+  max-width: var(--prose);
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: calc(var(--rail) / 2 - 1px);
+  width: 2px;
+  background: var(--rule);
+}
+.timeline-item { position: relative; padding-bottom: 2.3rem; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot {
+  position: absolute;
+  top: 0.3rem;
+  left: calc(-1 * (var(--rail) + 1.4rem));
+  width: var(--rail);
+  height: var(--rail);
+  border-radius: 50%;
   background: var(--paper);
+  border: 2px solid var(--muted);
+}
+.timeline-dot.is-current { border-color: var(--accent); background: var(--accent); }
+.timeline-period {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 0.2rem;
+}
+.timeline-item h3 { font-size: 1.12rem; margin: 0 0 0.15rem; }
+.timeline-org { margin: 0 0 0.6rem; color: var(--ink); font-weight: 500; }
+.timeline-org span { color: var(--muted); font-weight: 400; }
+.timeline-org span::before { content: "\00b7"; margin: 0 0.5em; }
+.timeline-summary { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+
+/* Wider screens: the line runs down the middle and entries take turns on
+   each side, the first on the left. The place sits on the outer side of
+   the organisation, away from the line. */
+@media (min-width: 721px) {
+  .timeline { max-width: 62rem; margin: 0 auto; padding: 0; }
+  .timeline::before { left: 50%; transform: translateX(-50%); }
+  .timeline-item { width: 50%; }
+  .timeline-item:nth-child(odd) { padding-right: 2.6rem; text-align: right; }
+  .timeline-item:nth-child(even) { margin-left: 50%; padding-left: 2.6rem; }
+  .timeline-item:nth-child(odd) .timeline-dot { left: auto; right: calc(var(--rail) / -2); }
+  .timeline-item:nth-child(even) .timeline-dot { left: calc(var(--rail) / -2); }
+  .timeline-org {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.75rem;
+  }
+  .timeline-org span::before { content: none; }
+  .timeline-item:nth-child(odd) .timeline-org { flex-direction: row-reverse; }
 }
 
 /* ---------------------------------------------------------------- theme switcher */
@@ -962,7 +1029,7 @@ section + section, .block + .block {
 
 .post-single-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 17rem;
+  grid-template-columns: minmax(0, 1fr) 15rem;
   gap: 3.5rem;
   align-items: start;
   margin-top: 2.6rem;
@@ -976,13 +1043,14 @@ section + section, .block + .block {
   #toc-sidebar { position: static; }
 }
 
-#post-content { max-width: var(--prose); }
+#post-content { max-width: var(--post-prose); }
 #post-content h1, #post-content h2 { margin-top: 2.2rem; }
 #post-content h3 { margin-top: 1.5rem; }
 /* Leaves room above a heading reached by a link, so it does not land under
    the fixed navigation bar. */
 #post-content :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 6rem; }
-#post-content p { color: var(--ink-soft); }
+#post-content p,
+#post-content li { color: var(--ink-soft); }
 .code-block-wrapper { position: relative; margin: 1.2rem 0; }
 #post-content pre {
   background: var(--card);
@@ -1030,7 +1098,13 @@ html[data-theme="dark"] #post-content pre.shiki span { color: var(--shiki-dark);
   padding-left: 1rem;
   border-left: 2px solid var(--rule);
   color: var(--ink-soft);
+  font-style: italic;
 }
+
+/* Two references that follow each other get a comma between them, so that they do not read as
+   one number. */
+#post-content sup + sup::before,
+.prose sup + sup::before { content: ","; margin-right: 0.08em; }
 
 #toc-sidebar {
   font-size: 0.92rem;
@@ -1051,10 +1125,29 @@ html[data-theme="dark"] #post-content pre.shiki span { color: var(--shiki-dark);
 #toc-title::-webkit-details-marker { display: none; }
 #toc-sidebar:not([open]) #toc-title { border-bottom-color: transparent; margin-bottom: 0; }
 @media (min-width: 861px) { #toc-title { pointer-events: none; cursor: default; } }
+/* A list taller than the room it has scrolls inside itself, so the contents never run to the
+   bottom of the screen. */
+#toc-content {
+  max-height: calc(100vh - var(--nav-h) - 8rem);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+#toc-content::-webkit-scrollbar { display: none; }
 #toc-content ul { list-style: none; margin: 0; padding: 0; }
 #toc-content li { margin-bottom: 0.6rem; }
-#toc-content a { color: var(--accent); text-decoration: none; font-size: 0.9rem; line-height: 1.4; display: block; }
+#toc-content li.toc-sub { margin-left: 0.9rem; margin-bottom: 0.4rem; }
+#toc-content li.toc-sub a { font-size: 0.82rem; }
+#toc-content a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  display: block;
+  transition: color 0.15s;
+}
 #toc-content a:hover { color: var(--ink); text-decoration: underline; }
+/* The section that is being read. */
+#toc-content a[data-active="true"] { color: var(--accent); font-weight: 500; }
 
 /* ---------------------------------------------------------------- footnotes */
 
@@ -1115,4 +1208,67 @@ a[data-footnote-backref] {
   width: 0.9em;
   height: 0.9em;
   vertical-align: -0.1em;
+}
+
+/* Figures that are inlined SVG files take the colors of the page, with a transparent
+   background. */
+#post-content figure.diagram {
+  margin: 1.6rem 0;
+  color: var(--ink);
+}
+#post-content figure.diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Tables: the wrapper draws the outline and scrolls a table that is wider than the column.
+   Columns are as wide as their content, and a column aligned with a colon in the Markdown keeps
+   its alignment through the align attribute that marked writes. */
+#post-content .table-wrap {
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.4rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 0.6rem;
+}
+#post-content table {
+  width: max-content;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+#post-content th,
+#post-content td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+#post-content th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+#post-content tbody tr:last-child td { border-bottom: 0; }
+#post-content th[align="right"],
+#post-content td[align="right"] { text-align: right; }
+#post-content th[align="center"],
+#post-content td[align="center"] { text-align: center; }
+
+/* References are set smaller than the text, in a post and on the chess page. */
+#post-content section.footnotes,
+#post-content section.footnotes li,
+#post-content section.footnotes li p,
+.prose section.footnotes,
+.prose section.footnotes li,
+.prose section.footnotes li p {
+  font-size: 0.82rem;
+  line-height: 1.55;
 }

@@ -1,9 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
 import { Marked } from "marked";
 import markedFootnote from "marked-footnote";
 import markedKatex from "marked-katex-extension";
 import { getSingletonHighlighter, type BundledLanguage } from "shiki";
 
-export type TocEntry = { id: string; text: string };
+export type TocEntry = { id: string; text: string; level: number };
 
 // `defaultColor: false` makes shiki emit --shiki-light / --shiki-dark CSS
 // variables per token instead of baking in one theme's colors, so the
@@ -18,6 +20,23 @@ const BACKREF_ICON =
   '<svg class="footnote-backref-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
   'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
   '<path d="M20 20v-7a4 4 0 0 0-4-4H4"/><path d="m9 14-5-5 5-5"/></svg>';
+
+/**
+ * The markup of a figure that is an SVG file under public/images. The file is inlined, so that
+ * its text and lines take the colors of the page in both themes, and its width follows the
+ * column. Any other image stays an <img>.
+ */
+function inlineSvg(href: string, alt: string): string | null {
+  if (!href.startsWith("/images/") || !href.endsWith(".svg")) return null;
+  const file = path.join(process.cwd(), "public", href);
+  if (!fs.existsSync(file)) return null;
+  const svg = fs
+    .readFileSync(file, "utf-8")
+    .replace(/<svg([^>]*?)\swidth="[\d.]+"/, "<svg$1")
+    .replace(/<svg([^>]*?)\sheight="[\d.]+"/, "<svg$1")
+    .replace("<svg ", '<svg role="img" aria-label="' + alt.replace(/"/g, "&quot;") + '" ');
+  return `<figure class="diagram">${svg}</figure>\n`;
+}
 
 function slugify(text: string) {
   return text
@@ -70,8 +89,11 @@ export async function renderMarkdown(source: string) {
         let id = slugify(text) || "section";
         for (let n = 2; used.has(id); n++) id = `${slugify(text) || "section"}-${n}`;
         used.add(id);
-        if (depth <= 2) toc.push({ id, text });
+        if (depth === 2 || depth === 3) toc.push({ id, text, level: depth });
         return `<h${depth} id="${id}">${html}</h${depth}>\n`;
+      },
+      image({ href, text }) {
+        return inlineSvg(href, text) ?? `<img src="${href}" alt="${text}">`;
       },
       code({ text, lang }) {
         const language = lang?.split(/\s+/)[0];
@@ -88,6 +110,11 @@ export async function renderMarkdown(source: string) {
     },
   });
 
-  const html = marked.parse(source, { async: false }).replaceAll("\u21A9", BACKREF_ICON);
+  // A wrapper lets a table wider than the column scroll sideways instead of wrapping its cells.
+  const html = marked
+    .parse(source, { async: false })
+    .replaceAll("\u21A9", BACKREF_ICON)
+    .replaceAll("<table>", '<div class="table-wrap"><table>')
+    .replaceAll("</table>", "</table></div>");
   return { html, toc };
 }

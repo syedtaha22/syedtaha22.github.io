@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CareerTimeline from "@/components/CareerTimeline";
 import { GitHubIcon, InstagramIcon, LinkedInIcon } from "@/components/icons";
 
 const DESCRIPTION =
@@ -118,14 +119,14 @@ export default function HomePage() {
       <section className="block" id="cv">
         <p className="eyebrow">Curriculum Vitae</p>
         <h2>CV</h2>
-        <p className="prose" style={{ marginBottom: "1.6rem" }}>
-          Education, projects, experience, and coursework, kept reasonably up to date.{" "}
+        <p className="prose" style={{ marginBottom: "2rem" }}>
+          Education and experience, newest first.{" "}
           <a href="/cv.pdf" download>
-            Download the PDF
+            Download the full CV (PDF)
           </a>{" "}
-          if it doesn&apos;t render below.
+          for projects, skills and achievements.
         </p>
-        <iframe src="/cv.pdf#pagemode=none&navpanes=0" className="cv-embed" title="Syed Taha, CV (PDF)" />
+        <CareerTimeline />
       </section>
     </main>
   );
