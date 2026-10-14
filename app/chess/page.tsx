@@ -6,15 +6,15 @@ import { renderMarkdown } from "@/lib/markdown";
 import "./chess.css";
 
 export const metadata: Metadata = {
-  title: { absolute: "Chess - Syed Taha" },
+  title: { absolute: "Meridian, a chess engine - Syed Taha" },
   description:
-    "Play against a chess engine written in C++: alpha-beta search over bitboards, " +
-    "served over HTTP.",
+    "Play against Meridian, a chess engine written in C++: alpha-beta search over " +
+    "bitboards, served over HTTP.",
   alternates: { canonical: "/chess/" },
   openGraph: {
     type: "website",
-    title: "Chess - Syed Taha",
-    description: "Play against a chess engine written in C++.",
+    title: "Meridian, a chess engine - Syed Taha",
+    description: "Play against Meridian, a chess engine written in C++.",
     url: "/chess/",
   },
 };
@@ -31,9 +31,9 @@ export default async function ChessPage() {
   return (
     <main>
       <div className="wrap">
-        <h1 style={{ fontSize: "clamp(2rem, 4vw, 2.6rem)" }}>Chess</h1>
-        <p className="prose">
-          An alpha-beta chess engine written in C++. Play against it below.
+        <h1 style={{ fontSize: "clamp(2rem, 4vw, 2.6rem)" }}>Meridian</h1>
+        <p className="prose" style={{ maxWidth: "62rem" }}>
+          A chess engine written in C++, with alpha-beta search over bitboards. Play against it below.
         </p>
       </div>
 
@@ -42,7 +42,7 @@ export default async function ChessPage() {
       </div>
 
       <div className="wrap chess-about">
-        <h2>About the engine</h2>
+        <h2>About Meridian</h2>
         <div className="prose" dangerouslySetInnerHTML={{ __html: about }} />
       </div>
     </main>

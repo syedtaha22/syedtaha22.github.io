@@ -11,12 +11,25 @@
 
 /* The written description below the board. */
 .chess-about {
-  max-width: 56.25rem;
+  max-width: 68rem;
   margin: 4.4rem auto 0;
   padding: 3.2rem 2rem 0;
   border-top: 1px solid var(--rule-soft);
 }
 
 .chess-about .prose {
-  max-width: 46rem;
+  max-width: 58rem;
+}
+
+/* The description is justified, with hyphenation so that the gaps stay small. The references
+   keep a ragged edge, since they hold long words and links. */
+.chess-about .prose p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+.chess-about .prose .footnotes p,
+.chess-about .prose .footnotes li {
+  text-align: left;
+  hyphens: manual;
 }
