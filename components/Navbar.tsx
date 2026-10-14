@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { usePathname } from "next/navigation";
-import { BlogIcon, ChessIcon, HomeIcon, ProjectsIcon } from "@/components/icons";
+import { BlogIcon, HomeIcon, MeridianMark, ProjectsIcon } from "@/components/icons";
 import { useCutoutMask } from "@/hooks/useCutoutMask";
 import { useSlidingIndicator } from "@/hooks/useSlidingIndicator";
 
@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/", label: "Home", Icon: HomeIcon },
   { href: "/projects/", label: "Projects", Icon: ProjectsIcon },
   { href: "/blog/", label: "Blog", Icon: BlogIcon },
-  { href: "/chess/", label: "Chess", Icon: ChessIcon },
+  { href: "/meridian/", label: "Meridian", Icon: MeridianMark },
 ];
 
 function isCurrent(pathname: string, href: string) {

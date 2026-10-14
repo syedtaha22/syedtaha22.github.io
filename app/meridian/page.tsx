@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
-import { ChessBoard } from "@chess/frontend";
+import { ChessBoard } from "@/components/chess";
 import { renderMarkdown } from "@/lib/markdown";
 import "./chess.css";
 
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description:
     "Play against Meridian, a chess engine written in C++: alpha-beta search over " +
     "bitboards, served over HTTP.",
-  alternates: { canonical: "/chess/" },
+  alternates: { canonical: "/meridian/" },
   openGraph: {
     type: "website",
     title: "Meridian, a chess engine - Syed Taha",
     description: "Play against Meridian, a chess engine written in C++.",
-    url: "/chess/",
+    url: "/meridian/",
   },
 };
 
@@ -25,7 +25,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CHESS_API_URL ?? "http://localhost:
 
 export default async function ChessPage() {
   // The description is markdown, so that its citations are footnotes like the ones in a post.
-  const source = fs.readFileSync(path.join(process.cwd(), "app/chess/about.md"), "utf-8");
+  const source = fs.readFileSync(path.join(process.cwd(), "app/meridian/about.md"), "utf-8");
   const { html: about } = await renderMarkdown(source);
 
   return (

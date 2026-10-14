@@ -44,5 +44,5 @@ the tests and every recorded benchmark step are in the repository.[^18]
 [^15]: *Late Move Reductions*. <https://www.chessprogramming.org/Late_Move_Reductions>
 [^16]: *Piece-Square Tables*. <https://www.chessprogramming.org/Piece-Square_Tables>
 [^17]: Stockfish developers. *Stockfish*. <https://stockfishchess.org>
-[^18]: Taha, S. *chess* [Source code]. GitHub. <https://github.com/syedtaha22/chess>
+[^18]: Taha, S. *meridian* [Source code]. GitHub. <https://github.com/syedtaha22/meridian>
 [^19]: *Texel's Tuning Method*. <https://www.chessprogramming.org/Texel%27s_Tuning_Method>

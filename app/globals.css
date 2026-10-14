@@ -188,6 +188,14 @@ a:focus-visible, button:focus-visible {
   .site-nav .nav-label { display: none; }
   .site-nav .nav-icon { display: flex; }
   .site-nav .nav-icon svg { width: 1.15rem; height: 1.15rem; }
+  /* The view box of the Meridian mark has room around the drawing, so its svg is taller than
+     the drawing, and the negative margin keeps the link as tall as its neighbours. */
+  .site-nav .nav-icon .meridian-mark {
+    width: 1.1rem;
+    height: 1.45rem;
+    margin-block: -0.15rem;
+    overflow: visible;
+  }
 
   .site-nav[data-cutout="ready"] a { color: transparent; }
   .site-nav a:hover:not(.is-current) { background: rgba(255, 255, 255, 0.14); }

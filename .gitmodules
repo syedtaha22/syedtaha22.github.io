@@ -1,3 +1,0 @@
-[submodule "vendor/chess"]
-	path = vendor/chess
-	url = https://github.com/syedtaha22/chess.git

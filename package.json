@@ -2,14 +2,13 @@
   "name": "personal-website",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "vendor/*/frontend"
-  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run --config components/chess/vitest.config.ts",
+    "build:pieces": "node components/chess/scripts/build-piece-sprite.mjs"
   },
   "dependencies": {
     "katex": "^0.18.9",
@@ -25,8 +24,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.7",
-    "typescript": "^5"
+    "jsdom": "^25.0.0",
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }
