@@ -7,22 +7,10 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    title: "PiSSM",
-    meta: "Python, PyTorch, gRPC, FastAPI, React",
-    body: "A distributed inference system for state space models that pools six Raspberry Pi 5 boards (24 GB combined memory, $1,530) into one cluster. An orchestrator tracks live workers and splits a model's layers into shards; each worker loads only its slice and passes activations to the next over gRPC. It runs Mamba-based language models that no single 4 GB board can hold, on a two-node pipeline at 1.1 to 1.2x the generation latency of a single node.",
-    link: { href: "https://github.com/syedtaha22/PiSSM", label: "View on GitHub →" },
-  },
-  {
-    title: "Project GLIDE",
-    meta: "Python, PyTorch",
-    body: "Our final year project on guidance and localisation in denied environments. Can a drone carrying only a 3-axis magnetometer navigate by the Earth's magnetic field when GPS is unavailable? We are researching this in a physics-informed simulator, where a small S4D state space model pilots the drone in closed loop, and collecting our own ground surveys of the field.",
-    link: { href: "https://github.com/Project-GLIDE", label: "View on GitHub →" },
-  },
-  {
-    title: "LLM Inference in xv6",
-    meta: "C, xv6 kernel",
-    body: "Could a modern LLM inference engine run on a minimal educational OS? A POSIX-compliant shared-memory subsystem for the xv6 kernel caches model weights (~100MB) without redundant transfers; custom threading primitives, built from scratch, parallelize the inference engine itself. End result: 16.2 tokens/sec, up from ~7.",
-    link: { href: "https://github.com/syedtaha22/xv6-llm-book", label: "Read the book →" },
+    title: "Meridian",
+    meta: "C++",
+    body: "An optimized successor to Horizon, a chess engine I wrote back in 2024, rebuilt as a UCI engine in C++20 with bitboards and magic move generation, a pruned alpha-beta search, and a neural network evaluation trained on 38.7 million positions. It plays at about 2930 Elo on Stockfish's UCI_Elo scale at one second per move, up from about 1130 for Horizon, and searches 4.2 million nodes per second on one core.",
+    link: { href: "/meridian/", label: "Play it →" },
   },
   {
     title: "Othello AI with MCTS and CNNs",
@@ -37,15 +25,27 @@ export const PROJECTS: Project[] = [
     link: { href: "https://github.com/Octa-C/compiler", label: "View on GitHub →" },
   },
   {
+    title: "LLM Inference in xv6",
+    meta: "C, xv6 kernel",
+    body: "Could a modern LLM inference engine run on a minimal educational OS? A POSIX-compliant shared-memory subsystem for the xv6 kernel caches model weights (~100MB) without redundant transfers; custom threading primitives, built from scratch, parallelize the inference engine itself. End result: 16.2 tokens/sec, up from ~7.",
+    link: { href: "https://github.com/syedtaha22/xv6-llm-book", label: "Read the book →" },
+  },
+  {
     title: "Pariah: GNN-Transformer Intrusion Detection",
     meta: "Python, PyTorch",
     body: "A systematization-of-knowledge study of GNN-Transformer hybrids for network intrusion detection under distribution shift: a taxonomy of graph-based detectors, a reproducible NetFlow benchmark with documented environment splits, and controlled tests of invariance objectives against tuned ERM and Group DRO. Research in progress.",
     link: { href: "https://github.com/syedtaha22/pariah", label: "View on GitHub →" },
   },
   {
-    title: "Kaggle: Safe Driver Prediction, 1st Place",
-    meta: "Python, XGBoost, LightGBM, CatBoost",
-    body: "A stacking ensemble of XGBoost, LightGBM, and CatBoost with a logistic regression meta-learner, combined with preprocessing for extensive missing data and non-predictive features. Finished 1st on imbalanced tabular data (Private Leaderboard AUROC: 0.64671).",
-    link: { href: "/blog/enhanched-safe-drive-prediction/", label: "Read the write-up →" },
+    title: "Project GLIDE",
+    meta: "Python, PyTorch",
+    body: "Our final year project on guidance and localization in denied environments. Can a drone carrying only a 3-axis magnetometer navigate by the Earth's magnetic field when GPS is unavailable? We are researching this in a physics-informed simulator, where a small S4D state space model pilots the drone in closed loop, and collecting our own ground surveys of the field.",
+    link: { href: "https://github.com/Project-GLIDE", label: "View on GitHub →" },
+  },
+  {
+    title: "PiSSM",
+    meta: "Python, PyTorch, gRPC, FastAPI, React",
+    body: "A distributed inference system for state space models that pools six Raspberry Pi 5 boards (24 GB combined memory, $1,530) into one cluster. An orchestrator tracks live workers and splits a model's layers into shards; each worker loads only its slice and passes activations to the next over gRPC. It runs Mamba-based language models that no single 4 GB board can hold, on a two-node pipeline at 1.1 to 1.2x the generation latency of a single node.",
+    link: { href: "https://github.com/syedtaha22/PiSSM", label: "View on GitHub →" },
   },
 ];
