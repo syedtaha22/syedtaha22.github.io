@@ -870,6 +870,23 @@ section + section, .block + .block {
   color: var(--muted);
   text-align: center;
 }
+/* The 404 page has no footer and no navigation bar. */
+body:has(.not-found) .site-footer,
+body:has(.not-found) .site-nav { display: none; }
+
+/* The 404 page fills the window and centers its content, horizontally and vertically. It is
+   fixed, so it takes no space in the page and cannot make the page scroll. */
+.not-found {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 .site-footer a { color: var(--muted); }
 .site-footer a:hover { color: var(--accent); }
 
