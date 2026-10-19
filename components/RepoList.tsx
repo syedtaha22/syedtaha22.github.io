@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ActivityIcon, ArchiveIcon, EllipsisIcon, ListFilterIcon } from "@/components/icons";
+import { ActivityIcon, ArchiveIcon, EllipsisIcon } from "@/components/icons";
 import Tabs from "@/components/Tabs";
 import type { TabItem } from "@/components/Tabs";
 
@@ -87,7 +87,7 @@ function RepoCard({ repo }: { repo: Repo }) {
 export default function RepoList() {
   const [repos, setRepos] = useState<Repo[] | null>(null);
   const [failed, setFailed] = useState(false);
-  const [tab, setTab] = useState("all");
+  const [tab, setTab] = useState("active");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -120,11 +120,10 @@ export default function RepoList() {
   const counts = useMemo(() => {
     const c = { active: 0, inactive: 0, other: 0 };
     repos?.forEach((r) => c[r.bucket]++);
-    return { ...c, all: c.active + c.inactive };
+    return c;
   }, [repos]);
 
   const tabs: TabItem[] = [
-    { key: "all", label: "All", icon: <ListFilterIcon /> },
     { key: "active", label: "Active", icon: <ActivityIcon /> },
     { key: "inactive", label: "Inactive", icon: <ArchiveIcon /> },
     { key: "other", label: "Other", icon: <EllipsisIcon /> },
@@ -135,10 +134,7 @@ export default function RepoList() {
 
   const visible = useMemo(() => {
     if (!repos) return [];
-    let list =
-      tab === "all"
-        ? repos.filter((r) => r.bucket === "active" || r.bucket === "inactive")
-        : repos.filter((r) => r.bucket === tab);
+    let list = repos.filter((r) => r.bucket === tab);
     const q = query.trim().toLowerCase();
     if (q) {
       list = list.filter(

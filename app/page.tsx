@@ -119,12 +119,12 @@ export default function HomePage() {
       <section className="block" id="cv">
         <p className="eyebrow">Curriculum Vitae</p>
         <h2>CV</h2>
-        <p className="prose" style={{ marginBottom: "2rem" }}>
-          Education and experience.{" "}
+        <p className="prose" style={{ marginBottom: "2rem", maxWidth: "none" }}>
+          Where I&apos;ve studied and worked. The full CV, with projects and skills, is{" "}
           <a href="/cv.pdf" download>
-            Download the CV (PDF)
-          </a>{" "}
-          for projects, skills and achievements.
+            available as a PDF
+          </a>
+          .
         </p>
         <CareerTimeline />
       </section>
