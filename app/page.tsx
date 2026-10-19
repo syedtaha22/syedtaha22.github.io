@@ -120,9 +120,9 @@ export default function HomePage() {
         <p className="eyebrow">Curriculum Vitae</p>
         <h2>CV</h2>
         <p className="prose" style={{ marginBottom: "2rem" }}>
-          Education and experience, newest first.{" "}
+          Education and experience.{" "}
           <a href="/cv.pdf" download>
-            Download the full CV (PDF)
+            Download the CV (PDF)
           </a>{" "}
           for projects, skills and achievements.
         </p>

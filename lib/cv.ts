@@ -33,9 +33,8 @@ export const TIMELINE: TimelineEntry[] = [
     org: "Systems Research @ IBA",
     place: "Karachi, Pakistan",
     summary:
-      "Research on systems for ML inference, including PiSSM, a distributed state space " +
-      "model inference system on a Raspberry Pi 5 cluster, and an AlphaZero-style Othello " +
-      "engine. Created the group's website and GitHub organization.",
+      "Conducting research on systems for machine learning inference and high-performance " +
+      "computing, spanning distributed computing, edge hardware and code optimization.",
     current: true,
   },
   {

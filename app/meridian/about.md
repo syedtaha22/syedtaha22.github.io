@@ -7,7 +7,7 @@ rook can reach past the pieces in its way into one multiplication and one array 
 To choose a move it searches the tree of continuations with alpha-beta pruning,[^3][^4] which drops
 any line a player would never allow. Moves are tried most promising first:[^5] the hash move,[^6]
 then captures by the value of the victim,[^7] then the quiet moves that caused cutoffs before.[^8][^9]
-Positions already seen are recognised by a Zobrist hash.[^10][^11] Captures are played out at the
+Positions already seen are recognized by a Zobrist hash.[^10][^11] Captures are played out at the
 horizon, so the search does not stop in the middle of an exchange,[^12] and it deepens one ply at
 a time, so a move is always ready when the clock runs out.[^13] Lines that are already good
 enough are cut short with a null move test,[^14] and late quiet moves are searched less deeply.[^15]
