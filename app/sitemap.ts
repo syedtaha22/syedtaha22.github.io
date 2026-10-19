@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/projects/`, lastModified: latest },
     { url: `${BASE}/blog/`, lastModified: latest },
     { url: `${BASE}/meridian/`, lastModified: latest },
+    { url: `${BASE}/meristats/`, lastModified: latest },
     ...posts.map((p) => ({ url: `${BASE}/blog/${p.slug}/`, lastModified: p.date })),
   ];
 }
