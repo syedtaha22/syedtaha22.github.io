@@ -8,6 +8,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://syedtaha22.github.io"),
   authors: [{ name: "Syed Taha" }],
+  verification: { google: "ETAhrqh-Lyn-KfOylncRrOs4x1V8XBdTXB2CVI76ByQ" },
   icons: {
     icon: [
       { url: "/favicons/favicon-32x32.webp", sizes: "32x32", type: "image/png" },
