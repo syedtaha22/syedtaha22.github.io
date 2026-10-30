@@ -1,51 +1,49 @@
-Perhaps the very first "proper" piece of software I wrote was a chess engine for my Object-Oriented
-Programming project at university, back in 2024. I was quite proud of it, and much of what I learned 
-while building it (scripting, testing, search algorithms and version control) I have used throughout
-my degree.
+Perhaps the very first "proper" piece of software I wrote was a chess engine for one of my university
+courses, back in 2024. I was quite proud of it, and much of what I learnt while building it has carried
+me throughout my degree.
 
-Now 2 years, 5 semesters, and many experiences later (more coursework, more projects, more AI/ML
-and HPC work), I went back to see how far I had come. I measured how the old program performed and
-what could be improved.
+I was a bit bored a few weeks ago and, not wanting to prepare for my exams, I decided that now was probably
+a good time to jog old memories. Primarily, I was just curious to see what I've learnt in the past years
+and how it would shape my decisions if I were to start over. It would also help me understand how far
+I had come, and potentially expose more flaws in my thinking (it did). In summary, I ended up rewriting
+the entire engine.
 
-The old engine needed 24 seconds to choose a move at depth 3. The new one reaches depth 10 in 11
-milliseconds. Between those two numbers sit a benchmark harness, multiple measured steps, a neural
-network trained on 38.7 million positions, matches against Stockfish, a bot on Lichess, and a long
-list of ideas that did not work. You can play against it [here](/meridian/).
+The old engine needed 24 seconds to choose a move at depth 3. The new one reaches depth 10 in 11 milliseconds.
+Between those two numbers sit a benchmark harness, multiple measured steps, a neural network trained on 38.7
+million positions, matches against Stockfish, a bot on Lichess, and a long list of ideas that did not work.
+
+You can play against it N[here](/meridian/).
 
 ## Priors
 
+Before I can even begin to explain the series of terrible decisions I made back then, I think I should
+still pay some tribute.
+
 I named the first engine Horizon (after the horizon effect) and its last release,
-[v5.2.3](https://github.com/syedtaha22/Chess-v5.0/releases/tag/v5.2.3), is still installable on 
-Windows. It was a desktop chess app, with the engine built in and written in C++ with the 
-[raylib](https://www.raylib.com) library for the window, the pieces and the sounds. The README 
-described the engine as minimax with alpha-beta pruning, transposition tables and piece-square 
-tables. That was accurate, and it was all that I understood about the subject at the time.
-The ideation document that I wrote for the course ended with these aims:
+[v5.2.3](https://github.com/syedtaha22/Chess-v5.0/releases/tag/v5.2.3), should still be playable on
+Windows. I wrote it as a desktop chess app, with a built-in engine, written in C++, with
+[raylib](https://www.raylib.com) for the window, pieces, and sounds. This was the first mistake.
+My initial goal was to build a chess engine. I ended up with a chess app.
 
-> 6. Improve the AI.
-> 7. Write efficient and reusable code, by dividing parts into multiple files.
-> 8. Have the AI beat Stockfish.
+The release notes said:
 
-I had no idea whether the last one was possible. I also remembered that the engine was slow. The
-README said "To avoid Long search times this is set to 3 by Default", and at the bottom of the
-release notes I had written:
+> In case you're able to run the engine at higher depth (depths > 5), do let me know.
 
-> Incase you're able to run the engine at higher depth (depths > 5), do let me know.
+I meant it as a polite request (I blamed the slow performance on my laptop...).
 
-I meant it as a polite request (I blamed the slow performance on my laptop...). Reading it now,
-it is an admission that I never saw the engine search deeper than 4 or 5 plies myself.
-
-I read code again. A class called `GameModes` owned a `GraphicalBoard`, a `ChessBoard` and the
-engine. The `ChessBoard` held 64 pointers to pieces, and every piece carried its own texture and 
-screen rectangle. The window drew the board it was given, and the engine searched on a copy of it.
+Anyway, going over the code again made things very obvious. A class called `GameModes` owned a `GraphicalBoard`,
+a `ChessBoard` and the engine. The `ChessBoard` held 64 pointers to pieces, and every piece carried its own
+texture and screen rectangle. The window drew the board it was given, and the engine searched on a copy of it.
 
 ![On the left, the old program as one nested structure. A box called GameModes holds three parts: GraphicalBoard, ChessEngine and ChessBoard. The ChessBoard box holds 64 ChessPiece objects, each with a texture and a screen rectangle. Arrows lead from the GraphicalBoard and from the ChessEngine to the ChessBoard. On the right, the new design: an engine library with tests, a UCI program and an HTTP server under it, and a web board under the server.](/images/chess/architecture.svg)
 
-The problems were of four kinds. The search only played well as Black, scored every checkmate the same
-and never detected stalemate. Castling was allowed after a rook had moved away and back. Every node copied 64
-heap objects and leaked captured pieces, so a game of 40 moves reached 1GB. And making a move in the search
-set screen positions, while the engine thread was a loop that never slept and shared the board with the UI
-thread without a lock, which I was proud of at the time because I thought I had a multi-threaded chess engine.
+The problems fell into four groups:
+
+- **Search:** it played well only as Black, scored every checkmate the same and never detected stalemate.
+- **Rules:** castling stayed legal after a rook had moved away and back.
+- **Memory:** every node copied 64 heap objects and leaked captured pieces, so a game of 40 moves reached 1GB.
+- **Threading:** making a move in the search set screen positions, and the engine thread was a loop that never
+  slept and shared the board with the UI thread without a lock.
 
 ## Baseline
 
@@ -53,7 +51,7 @@ I benchmarked this original engine by creating a small adapter that compiles the
 stand-in `raylib.h` (with empty functions), and wrote a simple benchmark harness that it (and future
 improvements) could be tested against. The harness included 15 positions (searched to a fixed depth)
 and perft, which counts all the move sequences of a given length from a position[^1]. Correct counts
-are published for well-known positions[^2], which makes perft an exact test of a move generator.
+are published for well-known positions[^2].
 
 | Depth | Time per move | Positions searched |
 |:--|--:|--:|
@@ -61,11 +59,10 @@ are published for well-known positions[^2], which makes perft an exact test of a
 | 2 | 357ms | 6,993 |
 | 3 | 24,379ms | 159,004 |
 
-At depth 3 it took 24 seconds on average, and 55 seconds from opening positions. Running past depth 3
-was infeasible and skipped. Perft ran at about 70 thousand positions per second, and only 13 of 24 perft
-runs gave the correct count due to bugs in castling and promotion.
+At depth 3 it took 24 seconds on average, and at depth 4 I stopped waiting. Perft ran at about 70 thousand
+positions per second, and only 13 of 24 perft runs gave the correct count due to bugs in castling and promotion.
 
-## Optimizations
+## Optimisations
 
 The baseline shows where the time goes. The board is 64 objects on the heap, and every node of the search
 copies them and leaks the captured ones. A move passes through string parsing and sets screen positions on
@@ -216,8 +213,8 @@ draws, 115 losses). The engine with the tuned evaluation is engine 09.
 
 ### Neural Networks
 
-Modern chess engines rarely rely on a hand-written or tuned evaluation any more. Instead they have moved to
-efficiently updatable neural networks (NNUE)[^26] or other deep learning based approaches[^27]. I took the
+Modern chess engines rarely rely on a hand-written or tuned evaluation anymore. Instead they have moved to
+efficiently updatable neural networks (NNUE)[^26] or other deep-learning based approaches[^27]. I took the
 NNUE route. The engine with the network is engine 10.
 
 ![The first network, drawn as layers of nodes and connections. On the left are the inputs for each side, 768 each, connected to 128 values for each side in the first layer. Both groups of 128 connect to a single node of the output layer, and that node gives the score.](/images/chess/network-architecture.svg)
@@ -251,9 +248,9 @@ to 16 for each ply, which is the effective branching factor, and each improvemen
 
 ![A logarithmic chart of positions searched at each depth for seven engines, 01, 03, 05, 07, 08, 09 and 10. The engine with bitboards reaches ten million at depth 6. The others are lower. Engine 07 reaches 400 thousand at depth 10, and engines 08, 09 and 10 stay between 45 and 62 thousand.](/images/chess/nodes-by-depth.svg)
 
-## Hardware optimizations
+## Hardware optimisations
 
-A few ideas, that can make a fast program faster, rely on taking the hardware it runs on into account. The
+A few ideas that can make a fast program faster, rely on taking the hardware it runs on into account. The
 search ran at about 3.9 million positions per second on one core, and none of the three below changes a node
 count.
 
@@ -286,12 +283,10 @@ options, 50 games at each level, and fitted a rating to the scores of each engin
 | 09, 1000ms per move | 2602 | 2564 to 2640 |
 | 10, 1000ms per move | 2931 | 2876 to 2986 |
 
-
 The old engine at depth 3 rates about the same as my plain new search at depth 3. The new code did not make
 depth 3 better. It made depth 3 take 0.8ms instead of 24 seconds, and that opened the door to depth 10. The
 scale is Stockfish's `UCI_Elo`, which is calibrated for long time controls and ends at 3190, so 2931 is not a
 rating-list rating, and a rating near the top of the scale is the least certain.
-
 
 Per position my engine is faster than Stockfish, 4.2 million per second against 0.6 to 1.6 million per core,
 but Stockfish reaches depth 10 about 4.4 times sooner because it needs 2,300 positions where I need 45,163. I
@@ -318,7 +313,7 @@ gives checkmate.
 
 ## Meridian v1.0.0
 
-The final engine is released as Meridian 1.0.0. Against engine 10, it scored:
+The final engine (after more training) is released as Meridian 1.0.0. Against engine 10, it scored:
 
 | Time per move | Games | Score | Elo |
 |--:|--:|--:|:--|
@@ -335,8 +330,8 @@ readability first without understanding what I was trading them for, and I wante
 that speed is what drives it. A plain minimax search with unlimited time would reach the same or better
 conclusions, but nobody has unlimited time, so speed matters, and speed alone is not enough either. It has to
 come with a search that looks only at what is needed, and that has to be built into the engine. The original
-project also taught me to learn on my own, alongside my coursework, and not only from what is taught, though I 
-could not apply that to the project then, and this rewrite is probably my remedy for it
+project also taught me to learn on my own, alongside my coursework, and not only from what is taught, though I
+could not apply that to the project then, and this rewrite is probably my remedy for it.
 
 ## Goal 8
 
@@ -344,10 +339,9 @@ The goal of building the best chess engine in existence still stands, but I no l
 one jump. The engine now plays on [Lichess](https://lichess.org/@/ce_meridian), and a framework for evaluating
 and improving it continuously has been written ([meristats](/meristats)). The
 path from here is more structured: first beyond 3000 Elo, then the Top Chess Engine Championship
-([TCEC](https://tcec-chess.com)), and, of course, the endless, unending pursuit of learning.
+([TCEC](https://tcec-chess.com)). Underneath it all, is the same endless, unending pursuit of knowledge.
 
-The source code can be found [here](https://github.com/syedtaha22/meridian).
-
+The source code can be found at [https://github.com/syedtaha22/meridian](https://github.com/syedtaha22/meridian).
 
 [^1]: *Perft*. <https://www.chessprogramming.org/Perft>
 [^2]: *Perft Results*. <https://www.chessprogramming.org/Perft_Results>

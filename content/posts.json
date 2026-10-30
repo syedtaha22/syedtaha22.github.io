@@ -1,6 +1,25 @@
 {
   "posts": [
     {
+      "id": 3,
+      "title": "Chess, Bitboards, and Benchmarks: From 24 Seconds to 11 Milliseconds",
+      "date": "2026-10-16",
+      "author": "Syed Taha",
+      "excerpt": "Two years after my first real software project, I measure how slow it was, rebuild it step by step, and test every idea against a harness: bitboards, search, a neural network trained on self-play and Leela's games, and Stockfish as the referee.",
+      "category": "Systems",
+      "tags": [
+        "Chess",
+        "C++",
+        "Bitboards",
+        "Alpha-Beta",
+        "NNUE",
+        "Benchmarking"
+      ],
+      "filename": "3-chess-bitboards-and-benchmarks.md",
+      "featured_image": null,
+      "status": "published"
+    },
+    {
       "id": 1,
       "title": "RISC-V Development Environment Setup and Usage Guide",
       "date": "2026-03-29",

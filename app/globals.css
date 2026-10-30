@@ -1255,7 +1255,7 @@ a[data-footnote-backref] {
   width: fit-content;
   max-width: 100%;
   overflow-x: auto;
-  margin: 1.4rem 0;
+  margin: 1.4rem auto;
   border: 1px solid var(--rule);
   border-radius: 0.6rem;
 }
