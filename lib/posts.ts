@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { estimateReadingMinutes } from "@/lib/reading-time";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const POSTS_DIR = path.join(CONTENT_DIR, "posts");
@@ -14,7 +15,6 @@ type RawPost = {
   tags: string[];
   filename: string;
   featured_image: string | null;
-  readTime: number;
   status: string;
 };
 
@@ -55,7 +55,7 @@ function toMeta(raw: RawPost): PostMeta {
     excerpt: raw.excerpt,
     category: raw.category,
     tags: raw.tags,
-    readTime: raw.readTime,
+    readTime: estimateReadingMinutes(fs.readFileSync(path.join(POSTS_DIR, raw.filename), "utf-8")),
     filename: raw.filename,
   };
 }
