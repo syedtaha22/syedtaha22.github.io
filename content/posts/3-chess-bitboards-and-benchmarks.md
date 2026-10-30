@@ -12,7 +12,7 @@ The old engine needed 24 seconds to choose a move at depth 3. The new one reache
 Between those two numbers sit a benchmark harness, multiple measured steps, a neural network trained on 38.7
 million positions, matches against Stockfish, a bot on Lichess, and a long list of ideas that did not work.
 
-You can play against it N[here](/meridian/).
+You can play against it [here](/meridian/).
 
 ## Priors
 
