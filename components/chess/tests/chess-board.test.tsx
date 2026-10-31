@@ -43,15 +43,6 @@ beforeEach(() => {
     return reply({ scores: [], depth: 1, elapsed_ms: 1 })
   })
   vi.stubGlobal('fetch', fetchMock)
-  // jsdom has no media playback; the sounds are decoration anyway.
-  vi.stubGlobal(
-    'Audio',
-    class {
-      play() {
-        return Promise.resolve()
-      }
-    },
-  )
 })
 
 afterEach(() => {

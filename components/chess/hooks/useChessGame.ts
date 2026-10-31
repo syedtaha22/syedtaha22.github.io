@@ -8,7 +8,7 @@ import {
 } from '../lib/chess-rules'
 import { friendlyErrorMessage, requestAiMove } from '../lib/api-client'
 import type { AiMove } from '../lib/api-client'
-import { playSound } from '../lib/sounds'
+import { playSound, preloadSounds } from '../lib/sounds'
 import type { Color, EngineSettings, GameState, Move } from '../lib/types'
 
 /**
@@ -105,6 +105,11 @@ export function useChessGame(
     setState(createInitialState())
     setFailure(null)
   }, [])
+
+  // The sounds are decoded before the first move, so that a move does not wait for them.
+  useEffect(() => {
+    if (soundEnabled) preloadSounds()
+  }, [soundEnabled])
 
   // Sound effects follow the state, so a move sounds alike whoever made it.
   const previous = useRef<GameState | null>(null)
