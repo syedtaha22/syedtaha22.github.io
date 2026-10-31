@@ -1,15 +1,11 @@
-Perhaps the very first "proper" piece of software I wrote was a chess engine for one of my university
-courses, back in 2024. I was quite proud of it, and much of what I learnt while building it has carried
-me throughout my degree.
+In 2024, I wrote a chess engine for my OOP course and I was very proud of it. Recently, while updating
+my resume, I felt the urge to go back and admire my masterpiece. 
 
-I was a bit bored a few weeks ago and, not wanting to prepare for my exams, I decided that now was probably
-a good time to jog old memories. Primarily, I was just curious to see what I've learnt in the past years
-and how it would shape my decisions if I were to start over. It would also help me understand how far
-I had come, and potentially expose more flaws in my thinking (it did). In summary, I ended up rewriting
-the entire engine.
+In summary, I was utterly disappointed by the sheer idiocracy of the decisions I made back then, and ended
+up rewriting the entire codebase. 
 
 The old engine needed 24 seconds to choose a move at depth 3. The new one reaches depth 10 in 11 milliseconds.
-Between those two numbers sit a benchmark harness, multiple measured steps, a neural network trained on 38.7
+Between the two numbers sit a benchmark harness, multiple measured steps, a neural network trained on 38.7
 million positions, matches against Stockfish, a bot on Lichess, and a long list of ideas that did not work.
 
 You can play against it [here](/meridian/).
